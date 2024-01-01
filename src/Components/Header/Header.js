@@ -23,10 +23,13 @@ function Header() {
   const auth = getAuth(app);
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
     });
-  }, [user]);
+
+    // Clean up subscription when component unmounts
+    return () => unsubscribe();
+  }, [user, setUser, auth]);
   
   return (
     <div className="headerParentDiv">
